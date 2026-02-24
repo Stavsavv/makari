@@ -20,6 +20,8 @@ const navLinks = [
   },
   { label: "CAMPING-ΕΠΙΒΙΩΣΗ", href: "/products?category=camping" },
   { label: "ΑΞΕΣΟΥΑΡ", href: "/products?category=accessories" },
+  // Temporary: Admin link for development access
+  { label: "ADMIN", href: "/admin" },
 ];
 
 const Navbar = () => {

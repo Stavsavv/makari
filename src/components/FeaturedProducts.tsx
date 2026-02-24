@@ -1,8 +1,9 @@
 import ProductCard from "./ProductCard";
-import { products } from "@/data/products";
 import { Link } from "react-router-dom";
+import { useProducts } from "@/context/ProductsContext";
 
 const FeaturedProducts = () => {
+  const { products } = useProducts();
   const featured = products.filter((p) => p.isNew).slice(0, 4);
 
   return (

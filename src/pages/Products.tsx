@@ -3,13 +3,15 @@ import { useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { products, categories, subcategories } from "@/data/products";
+import { categories, categoryTree } from "@/data/products";
+import { useProducts } from "@/context/ProductsContext";
 import { SlidersHorizontal, X } from "lucide-react";
 
 type SortOption = "newest" | "price-asc" | "price-desc";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { products } = useProducts();
   const categoryParam = searchParams.get("category") || "all";
   const subcategoryParam = searchParams.get("subcategory") || null;
 
@@ -69,7 +71,6 @@ const Products = () => {
 
   const setSubcategory = (sub: string | null) => {
     const params = new URLSearchParams(searchParams);
-    params.set("category", "kynigetika");
     if (sub) {
       params.set("subcategory", sub);
     } else {
@@ -78,11 +79,12 @@ const Products = () => {
     setSearchParams(params);
   };
 
-  const pageTitle = subcategoryParam
-    ? subcategories[categoryParam]?.find((s) => s.slug === subcategoryParam)?.name || categories.find((c) => c.slug === categoryParam)?.name || "All"
-    : categoryParam !== "all"
-    ? categories.find((c) => c.slug === categoryParam)?.name || "All"
-    : filterParam === "new" ? "New Arrivals" : "All Products";
+  const pageTitle =
+    categoryParam !== "all"
+      ? categories.find((c) => c.slug === categoryParam)?.name || "All"
+      : filterParam === "new"
+      ? "New Arrivals"
+      : "All Products";
 
   return (
     <>
@@ -143,31 +145,47 @@ const Products = () => {
                 ))}
               </ul>
             </div>
-            {categoryParam === "kynigetika" && subcategories.kynigetika?.length > 0 && (
-              <div className="mb-8">
-                <h3 className="text-xs font-semibold uppercase tracking-wider mb-3">Υποκατηγορία</h3>
-                <ul className="space-y-2">
-                  <li>
-                    <button
-                      onClick={() => setSubcategory(null)}
-                      className={`text-sm transition-colors ${!subcategoryParam ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"}`}
-                    >
-                      Όλα
-                    </button>
-                  </li>
-                  {subcategories.kynigetika.map((sub) => (
-                    <li key={sub.slug}>
-                      <button
-                        onClick={() => setSubcategory(sub.slug)}
-                        className={`text-sm transition-colors ${subcategoryParam === sub.slug ? "text-foreground font-medium" : "text-muted-foreground hover:text-foreground"}`}
-                      >
-                        {sub.name}
-                      </button>
-                    </li>
+            {categoryParam !== "all" &&
+              categoryTree[categoryParam as keyof typeof categoryTree]?.length > 0 && (
+                <div className="mb-8">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider mb-3">
+                    Υποκατηγορίες
+                  </h3>
+                  <button
+                    onClick={() => setSubcategory(null)}
+                    className={`mb-3 text-xs transition-colors ${
+                      !subcategoryParam
+                        ? "text-foreground font-medium"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    Όλα
+                  </button>
+                  {categoryTree[categoryParam as keyof typeof categoryTree].map((group) => (
+                    <div key={group.slug} className="mb-4">
+                      <p className="text-xs font-semibold text-muted-foreground mb-1">
+                        {group.name}
+                      </p>
+                      <ul className="space-y-1 pl-2">
+                        {group.children.map((sub) => (
+                          <li key={sub.slug}>
+                            <button
+                              onClick={() => setSubcategory(sub.slug)}
+                              className={`text-sm transition-colors ${
+                                subcategoryParam === sub.slug
+                                  ? "text-foreground font-medium"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                            >
+                              {sub.name}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ))}
-                </ul>
-              </div>
-            )}
+                </div>
+              )}
           </aside>
 
           {/* Product grid */}

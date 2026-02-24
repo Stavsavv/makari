@@ -8,7 +8,7 @@ import product7 from "@/assets/product-7.jpg";
 import product8 from "@/assets/product-8.jpg";
 import { physigiaImages } from "./physigia";
 
-export type Subcategory = "physigia";
+export type Subcategory = string;
 
 export interface Product {
   id: string;
@@ -163,8 +163,209 @@ export const categories = [
   { id: "accessories", name: "Accessories", slug: "accessories" },
 ] as const;
 
-export const subcategories: Record<string, { slug: string; name: string }[]> = {
+export type CategoryGroup = {
+  slug: string;
+  name: string;
+  children: { slug: Subcategory; name: string }[];
+};
+
+export const categoryTree: Record<Product["category"], CategoryGroup[]> = {
+  stratiotika: [
+    {
+      slug: "stratiotika-rouxa-stoles",
+      name: "Ρούχα & Στολές",
+      children: [
+        { slug: "stratiotika-pantelonia", name: "Στρατιωτικά παντελόνια" },
+        { slug: "stratiotika-mplouzes-tshirts", name: "Μπλούζες & T-shirts" },
+        { slug: "stratiotika-mpoufan-jacket", name: "Μπουφάν & Jacket" },
+        { slug: "stratiotika-papoutsia-mpotes", name: "Παπούτσια & Μπότες" },
+      ],
+    },
+    {
+      slug: "stratiotika-exoplismos-axesouar",
+      name: "Εξοπλισμός & Αξεσουάρ",
+      children: [
+        { slug: "stratiotika-zones-fysiggiothikes", name: "Ζώνες & Φυσιγγιοθήκες" },
+        { slug: "stratiotika-sakidia-backpacks", name: "Σακίδια & Backpacks" },
+        { slug: "stratiotika-gantia-kalyimmata", name: "Γάντια & Καλύμματα" },
+      ],
+    },
+    {
+      slug: "stratiotika-prostasia-asfaleia",
+      name: "Προστασία & Ασφάλεια",
+      children: [
+        { slug: "stratiotika-krania", name: "Κράνη" },
+        { slug: "stratiotika-gileka-prostasias", name: "Γιλέκα προστασίας" },
+      ],
+    },
+    {
+      slug: "stratiotika-opla-axesouar",
+      name: "Όπλα & Αξεσουάρ Όπλων (νόμιμα)",
+      children: [
+        { slug: "stratiotika-maxairia-stratiotika", name: "Μαχαίρια στρατιωτικά" },
+        { slug: "stratiotika-opla-ekpaidefsis-airsoft", name: "Όπλα εκπαίδευσης / airsoft" },
+      ],
+    },
+  ],
+  astynomika: [
+    {
+      slug: "astynomika-rouxa-stoles",
+      name: "Ρούχα & Στολές",
+      children: [
+        { slug: "astynomika-stoles-astynomias", name: "Στολές Αστυνομίας" },
+        { slug: "astynomika-tshirts-poukamisa", name: "T-shirts & Πουκάμισα" },
+        { slug: "astynomika-papoutsia-mpotes", name: "Παπούτσια & Μπότες" },
+      ],
+    },
+    {
+      slug: "astynomika-exoplismos-prostasias",
+      name: "Εξοπλισμός Προστασίας",
+      children: [
+        { slug: "astynomika-alexisfaira-gileka", name: "Αλεξίσφαιρα Γιλέκα" },
+        { slug: "astynomika-krania-prostateftika", name: "Κράνη & Προστατευτικά" },
+      ],
+    },
+    {
+      slug: "astynomika-ergaleia-axesouar",
+      name: "Εργαλεία & Αξεσουάρ",
+      children: [
+        { slug: "astynomika-cheiropedes", name: "Χειροπέδες" },
+        { slug: "astynomika-fakoi-radiosyskeves", name: "Φακοί & Ραδιοσυσκευές" },
+        { slug: "astynomika-zones-thikes-exoplismou", name: "Ζώνες & Θήκες Εξοπλισμού" },
+      ],
+    },
+  ],
   kynigetika: [
-    { slug: "physigia", name: "Φυσιγγια" },
+    {
+      slug: "kynigetika-rouxa-papoutsia",
+      name: "Ρούχα & Παπούτσια",
+      children: [
+        { slug: "kynigetika-kamouflaz-roucha", name: "Καμουφλάζ Ρούχα" },
+        { slug: "kynigetika-mpotes-kynigiou", name: "Μπότες Κυνηγιού" },
+      ],
+    },
+    {
+      slug: "kynigetika-opla-axesouar",
+      name: "Όπλα & Αξεσουάρ",
+      children: [
+        { slug: "kynigetika-karampines-tyfekia", name: "Καραμπίνες & Τυφέκια" },
+        { slug: "kynigetika-tsok-exartimata-oplon", name: "Τσοκ & Εξαρτήματα Όπλων" },
+      ],
+    },
+    {
+      slug: "kynigetika-ergaleia",
+      name: "Κυνηγετικά Εργαλεία",
+      children: [
+        { slug: "kynigetika-stoxoi-fysiggia", name: "Στόχοι & Φυσίγγια" }, // keeps existing physigia concept
+        { slug: "kynigetika-sakidia-tsantes-kynigiou", name: "Σακίδια & Τσάντες Κυνηγιού" },
+        { slug: "kynigetika-dioptres-kialia", name: "Διόπτρες & Κιάλια" },
+        { slug: "kynigetika-koutia-metaforas", name: "Κουτιά Μεταφοράς" },
+        { slug: "kynigetika-maxairia-ergaleia-epiviosis", name: "Μαχαίρια & Εργαλεία Επιβίωσης" },
+      ],
+    },
+  ],
+  camping: [
+    {
+      slug: "camping-skines-ypnosakoi",
+      name: "Σκηνές & Υπνόσακοι",
+      children: [
+        { slug: "camping-skines", name: "Σκηνές" },
+        { slug: "camping-ypnosakoi", name: "Υπνόσακοι" },
+      ],
+    },
+    {
+      slug: "camping-fotismos-fakoi",
+      name: "Φωτισμός & Φακοί",
+      children: [
+        { slug: "camping-fotismos", name: "Φωτισμός" },
+        { slug: "camping-fakoi", name: "Φακοί" },
+      ],
+    },
+    {
+      slug: "camping-ergaleia-maxairia",
+      name: "Εργαλεία & Μαχαίρια",
+      children: [
+        { slug: "camping-ergaleia", name: "Εργαλεία" },
+        { slug: "camping-maxairia", name: "Μαχαίρια" },
+      ],
+    },
+    {
+      slug: "camping-skevi-mageiriki",
+      name: "Σκεύη & Εξοπλισμός Μαγειρικής",
+      children: [
+        { slug: "camping-skevi", name: "Σκεύη" },
+        { slug: "camping-exoplismos-mageirikis", name: "Εξοπλισμός Μαγειρικής" },
+      ],
+    },
+    {
+      slug: "camping-systimata-nerou",
+      name: "Συστήματα Καθαρισμού & Φιλτραρίσματος Νερού",
+      children: [
+        { slug: "camping-katharismos-nerou", name: "Καθαρισμός Νερού" },
+        { slug: "camping-filtrarismata-nerou", name: "Φιλτραρίσματα Νερού" },
+      ],
+    },
+    {
+      slug: "camping-roucha-papoutsia-outdoor",
+      name: "Ρούχα & Παπούτσια Outdoor",
+      children: [
+        { slug: "camping-roucha-outdoor", name: "Ρούχα Outdoor" },
+        { slug: "camping-papoutsia-outdoor", name: "Παπούτσια Outdoor" },
+      ],
+    },
+    {
+      slug: "camping-epiviosi-kits",
+      name: "Επιβίωση & Survival Kits",
+      children: [
+        { slug: "camping-epiviosi", name: "Επιβίωση" },
+        { slug: "camping-survival-kits", name: "Survival Kits" },
+      ],
+    },
+    {
+      slug: "camping-sxoinia-kouvertes-ylika",
+      name: "Σχοινιά, Κουβέρτες, Υλικά Κατασκευών",
+      children: [
+        { slug: "camping-sxoinia", name: "Σχοινιά" },
+        { slug: "camping-kouvertes", name: "Κουβέρτες" },
+        { slug: "camping-ylika-kataskevon", name: "Υλικά Κατασκευών" },
+      ],
+    },
+  ],
+  accessories: [
+    {
+      slug: "accessories-zones-thikes",
+      name: "Ζώνες & Θήκες",
+      children: [
+        { slug: "accessories-zones", name: "Ζώνες" },
+        { slug: "accessories-thikes", name: "Θήκες" },
+      ],
+    },
+    {
+      slug: "accessories-tsantes-kapela",
+      name: "Τσάντες & Καπέλα",
+      children: [
+        { slug: "accessories-tsantes", name: "Τσάντες" },
+        { slug: "accessories-kapela", name: "Καπέλα" },
+        { slug: "accessories-sakidia-tsantes", name: "Σακίδια & Τσάντες" },
+      ],
+    },
+    {
+      slug: "accessories-exoplismos-prostasias",
+      name: "Εξοπλισμός Προστασίας",
+      children: [
+        { slug: "accessories-alexisfaira-gileka", name: "Αλεξίσφαιρα Γιλέκα" },
+        { slug: "accessories-krania-prostateftika", name: "Κράνη & Προστατευτικά" },
+      ],
+    },
+    {
+      slug: "accessories-ergaleia-axesouar",
+      name: "Εργαλεία & Αξεσουάρ",
+      children: [
+        { slug: "accessories-cheiropedes", name: "Χειροπέδες" },
+        { slug: "accessories-fakoi-radiosyskeves", name: "Φακοί & Ραδιοσυσκευές" },
+        { slug: "accessories-zones-thikes-exoplismou", name: "Ζώνες & Θήκες Εξοπλισμού" },
+      ],
+    },
   ],
 };
+

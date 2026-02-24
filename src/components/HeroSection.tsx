@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import heroBanner from "@/assets/hero-banner.jpg";
+import heroBanner from "@/assets/hunter.jpg";
 
 const HeroSection = () => (
   <section className="relative h-[85vh] min-h-[600px] overflow-hidden">

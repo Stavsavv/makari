@@ -4,13 +4,14 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductsContext";
 import { toast } from "sonner";
 import { Check, Minus, Plus } from "lucide-react";
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { products } = useProducts();
   const product = products.find((p) => p.id === id);
   const { addItem } = useCart();
   const [selectedSize, setSelectedSize] = useState("");

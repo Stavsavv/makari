@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import categoryWomen from "@/assets/category-women.jpg";
-import categoryMen from "@/assets/category-men.jpg";
-import categoryShoes from "@/assets/category-shoes.jpg";
-import categoryAccessories from "@/assets/category-accessories.jpg";
+import categorPolice from "@/assets/category-police.jpg";
+import categoryArmy from "@/assets/category-army.webp";
+import categoryHunting from "@/assets/category-hunt.jpg";
+import categoryCamp from "@/assets/category-camp.webp";
+import categoryAccessories from "@/assets/category-accessories.webp";
 
 const categoryItems = [
-  { name: "ΣΤΡΑΤΙΩΤΙΚΑ ΕΙΔΗ", slug: "stratiotika", image: categoryMen },
-  { name: "ΑΣΤΥΝΟΜΙΚΑ ΕΙΔΗ", slug: "astynomika", image: categoryWomen },
-  { name: "ΚΥΝΗΓΕΤΙΚΑ ΕΙΔΗ", slug: "kynigetika", image: categoryMen },
-  { name: "CAMPING-ΕΠΙΒΙΩΣΗ", slug: "camping", image: categoryShoes },
-  { name: "Accessories", slug: "accessories", image: categoryAccessories },
+  { name: "ΣΤΡΑΤΙΩΤΙΚΑ ΕΙΔΗ", slug: "stratiotika", image: categoryArmy },
+  { name: "ΑΣΤΥΝΟΜΙΚΑ ΕΙΔΗ", slug: "astynomika", image: categorPolice },
+  { name: "ΚΥΝΗΓΕΤΙΚΑ ΕΙΔΗ", slug: "kynigetika", image: categoryHunting },
+  { name: "CAMPING-ΕΠΙΒΙΩΣΗ", slug: "camping", image: categoryCamp },
+  { name: "ΑΞΕΣΟΥΑΡ", slug: "accessories", image: categoryAccessories },
 ];
 
 const CategoryGrid = () => (
