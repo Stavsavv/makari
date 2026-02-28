@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { ShoppingBag, Menu, X, Search, ChevronDown } from "lucide-react";
+import { ShoppingBag, Menu, X, Search, ChevronDown, UserRound, LogOut } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -20,12 +21,11 @@ const navLinks = [
   },
   { label: "CAMPING-ΕΠΙΒΙΩΣΗ", href: "/products?category=camping" },
   { label: "ΑΞΕΣΟΥΑΡ", href: "/products?category=accessories" },
-  // Temporary: Admin link for development access
-  { label: "ADMIN", href: "/admin" },
 ];
 
 const Navbar = () => {
   const { totalItems } = useCart();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -85,6 +85,15 @@ const Navbar = () => {
                 </Link>
               )
             )}
+            {/* Admin link - only visible to admins */}
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="text-sm font-body tracking-wide uppercase text-muted-foreground hover:text-foreground transition-colors"
+              >
+                ADMIN
+              </Link>
+            )}
           </div>
 
           {/* Right icons */}
@@ -100,6 +109,27 @@ const Navbar = () => {
                 </span>
               )}
             </Link>
+            
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+                    <UserRound className="h-5 w-5" />
+                    <span className="text-sm hidden md:inline">{user?.name}</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem onClick={logout} className="text-red-600 cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Αποσύνδεση
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link to="/login" className="text-muted-foreground hover:text-foreground transition-colors">
+                <UserRound className="h-5 w-5" />
+              </Link>
+            )}
           </div>
         </nav>
       </header>
@@ -139,6 +169,38 @@ const Navbar = () => {
                   ) : null}
                 </div>
               ))}
+              
+              {/* Admin link for mobile - only visible to admins */}
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-lg font-display tracking-wide py-2"
+                >
+                  ADMIN
+                </Link>
+              )}
+              
+              {/* Mobile Auth Links */}
+              {isAuthenticated ? (
+                <button
+                  onClick={() => {
+                    logout();
+                    setMobileOpen(false);
+                  }}
+                  className="text-left text-lg font-display tracking-wide py-2 text-red-600"
+                >
+                  Αποσύνδεση
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-lg font-display tracking-wide py-2"
+                >
+                  Σύνδεση
+                </Link>
+              )}
             </div>
           </motion.div>
         )}

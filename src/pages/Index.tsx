@@ -14,9 +14,9 @@ const Index = () => (
       {/* Newsletter band */}
       <section className="bg-sand py-16">
         <div className="container text-center max-w-lg">
-          <h2 className="font-display text-2xl md:text-3xl font-semibold mb-3">Stay in the Loop</h2>
+          <h2 className="font-display text-2xl md:text-3xl font-semibold mb-3">Μην Χάσεις Καμία Νέα Άφιξη</h2>
           <p className="text-sm text-muted-foreground mb-6">
-            Subscribe for exclusive drops, styling tips, and 10% off your first order.
+          Κάνε εγγραφή για trends & ειδικές προσφορές.
           </p>
           <form className="flex max-w-md mx-auto" onSubmit={(e) => e.preventDefault()}>
             <input
